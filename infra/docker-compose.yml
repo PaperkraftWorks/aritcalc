@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  database:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    networks:
+      - djangonetwork
+    ports:
+      - "5432:5432"
+
+  backend:
+    user: developer
+    env_file: ./.env
+    build:
+      context: ..
+      dockerfile: infra/Backend.Dockerfile
+    command: tail -f /dev/null
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../backend/:/usr/bin/code/
+    depends_on:
+      - database
+    networks:
+      - djangonetwork
+    links: 
+      - database:database
+  frontend:
+    user: developer
+    build:
+      context: ..
+      dockerfile: infra/Frontend.Dockerfile
+    command: tail -f /dev/null
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../frontend/:/usr/bin/code/
+volumes:
+  postgres_data:
+networks:
+  djangonetwork:
+    driver: bridge
