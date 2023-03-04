@@ -6,3 +6,5 @@ TYPE_CHOICES = [
     ("SQR", "Squareroot"),
     ("RDM", "Random"),
 ]
+MAX_COST_FACTORY = 100000
+MIN_COST_FACTORY = 1000
