@@ -10,7 +10,7 @@ class RecordSerializer(serializers.ModelSerializer):
             "user_balance",
             "operation_response",
             "date",
-            "operation_id",
-            "user_id"
+            "operation",
+            "user"
         ]
         
