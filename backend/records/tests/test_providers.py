@@ -61,4 +61,5 @@ class GetLastRecordByUserID(TestCase):
         
         self.assertIsInstance(received_record, Record)
         
+        
     
