@@ -8,3 +8,6 @@ clean:
 	docker ps -aq | xargs docker stop | xargs docker rm
 build:
 	docker-compose -f ./infra/docker-compose.yml build --no-cache
+
+debug:
+	docker-compose up
