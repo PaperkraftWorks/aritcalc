@@ -10,4 +10,4 @@ build:
 	docker-compose -f ./infra/docker-compose.yml build --no-cache
 
 debug:
-	docker-compose up
+	docker-compose -f ./infra/docker-compose.yml up
