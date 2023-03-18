@@ -1,25 +1,16 @@
-import logo from './logo.svg';
-import './App.css';
+import Login from './AdminLTE/components/Login'
+import Menu from './AdminLTE/components/Menu'
+import Arithmetic from './AdminLTE/components/Arithmethic';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+        <div>
+            <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css"></link>
+        </div>
     </div>
-  );
-}
+  )
+};
 
 export default App;
