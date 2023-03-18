@@ -1,25 +1,23 @@
-# Create your views here.
-from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.generics import ListAPIView
+from rest_framework.settings import api_settings
+from rest_framework.permissions import IsAuthenticated
 from users.models import User
 from users.serializers import UserSerializer
-from rest_framework.parsers import JSONParser
 
 
-def user_list(request):
+
+class Users(ListAPIView):
     """
-    List all code users, or create a new user.
+    List all code operations, or create a new record.
     """
-    if request.method == 'GET':
-        users = User.objects.all()
-        serializer = UserSerializer(users, many=True)
-        return JsonResponse(serializer.data, safe=False)
-
-    elif request.method == 'POST':
-        data = JSONParser().parse(request)
-        serializer = UserSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
+    serializer_class = UserSerializer
+    pagination_class = api_settings.DEFAULT_PAGINATION_CLASS
+    queryset = User.objects.all()
+    permission_classes= [IsAuthenticated]
+    
+    def list(self, request, *args, **kwargs):
+        queryset=self.get_queryset()
+        serializer = UserSerializer(queryset, many=True)
+        page = self.paginate_queryset(serializer.data)
+        return self.get_paginated_response(page)

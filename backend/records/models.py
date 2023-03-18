@@ -12,4 +12,3 @@ class Record(models.Model):
     user_balance=models.BigIntegerField(null=False, default=0)
     operation_response=models.TextField(null=True)
     date=models.DateTimeField(auto_now=True)
-    
