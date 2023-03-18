@@ -1,23 +1,23 @@
-from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework.parsers import JSONParser
+from rest_framework.generics import ListAPIView
+from rest_framework.settings import api_settings
 from operations.models import Operation
 from operations.serializers import OperationSerializer
+from rest_framework.permissions import IsAuthenticated
 
 
-def operation_list(request):
+class Operations(ListAPIView):
     """
     List all code operations, or create a new record.
     """
-    if request.method == 'GET':
-        operations = Operation.objects.all()
-        serializer = OperationSerializer(operations, many=True)
-        return JsonResponse(serializer.data, safe=False)
-
-    elif request.method == 'POST':
-        data = JSONParser().parse(request)
-        serializer = OperationSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
+    serializer_class = OperationSerializer
+    pagination_class = api_settings.DEFAULT_PAGINATION_CLASS
+    queryset = Operation.objects.all()
+    permission_classes= [IsAuthenticated]
+    
+    
+    def list(self, request, *args, **kwargs):
+        queryset=self.get_queryset()
+        serializer = OperationSerializer(queryset, many=True)
+        page = self.paginate_queryset(serializer.data)
+        return self.get_paginated_response(page)

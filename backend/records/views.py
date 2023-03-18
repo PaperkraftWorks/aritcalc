@@ -1,23 +1,23 @@
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework.parsers import JSONParser
 from records.models import Record
 from records.serializers import RecordSerializer
+from rest_framework.generics import ListAPIView
+from rest_framework.settings import api_settings
+from rest_framework.permissions import IsAuthenticated
 
 
-def record_list(request):
+class Records(ListAPIView):
     """
     List all code records, or create a new record.
     """
-    if request.method == 'GET':
+    serializer_class = RecordSerializer
+    pagination_class = api_settings.DEFAULT_PAGINATION_CLASS
+    queryset = Record.objects.all()
+    permission_classes= [IsAuthenticated]
+    
+    def list(self, *args, **kwargs):
         records = Record.objects.all()
         serializer = RecordSerializer(records, many=True)
-        return JsonResponse(serializer.data, safe=False)
-
-    elif request.method == 'POST':
-        data = JSONParser().parse(request)
-        serializer = RecordSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
+        page = self.paginate_queryset(serializer.data)
+        return self.get_paginated_response(page)
