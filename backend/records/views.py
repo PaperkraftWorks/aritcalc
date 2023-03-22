@@ -3,8 +3,14 @@ from django.views.decorators.csrf import csrf_exempt
 from records.models import Record
 from records.serializers import RecordSerializer
 from rest_framework.generics import ListAPIView
+from rest_framework.views import APIView
 from rest_framework.settings import api_settings
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
+from records.services import get_last_record_by_user_id
+from rest_framework.response import Response
+
+
 
 
 class Records(ListAPIView):
@@ -21,3 +27,13 @@ class Records(ListAPIView):
         serializer = RecordSerializer(records, many=True)
         page = self.paginate_queryset(serializer.data)
         return self.get_paginated_response(page)
+    
+class LastUserRecord(APIView):
+    queryset = Record.objects.all()
+    permission_classes= [IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
+    
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        user_id = user.id
+        return Response(get_last_record_by_user_id(user_id=user_id))

@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from operations.views import Operations, Builder
-from records.views import Records
+from records.views import Records, LastUserRecord
 from rest_framework.authtoken import views
 from users.views import Users, Login, Logout
 
@@ -28,4 +28,5 @@ urlpatterns = [
     path('login/', Login.as_view()),
     path('logout/', Logout.as_view()),
     path('build_operation/', Builder.as_view()),
+    path('last_record/', LastUserRecord.as_view()),
 ]

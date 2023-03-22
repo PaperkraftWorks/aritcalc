@@ -50,6 +50,7 @@ class Login(ObtainAuthToken):
         return user        
     
     def post(self, request, *args, **kwargs):
+        breakpoint();
         username, pwd = self._process_authorization(token=request.headers.get('Authorization'))
         user = self._check_user(username=username, pwd=pwd)
         token, created = Token.objects.get_or_create(user=user)
@@ -57,6 +58,12 @@ class Login(ObtainAuthToken):
             'token': token.key,
             'user_id': user.pk,
             'email': user.email,
+        })
+    def options(self, request, *args, **kwargs):
+        breakpoint()
+        return Response(status=204, headers={
+            "Access-Control-Allow-Methods": 'POST, GET, OPTIONS, DELETE',
+            "Access-Control-Allow-Origin": "*",
         })
         
 class Logout(APIView):
