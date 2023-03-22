@@ -15,13 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from operations.views import Operations, Builder
 from records.views import Records
-from operations.views import Operations
-from users.views import Users
+from rest_framework.authtoken import views
+from users.views import Users, Login, Logout
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('records/', Records.as_view(), name='records'),
     path('operations/', Operations.as_view(), name='operations'),
     path('users/', Users.as_view(), name='users'),
+    path('login/', Login.as_view()),
+    path('logout/', Logout.as_view()),
+    path('build_operation/', Builder.as_view()),
 ]

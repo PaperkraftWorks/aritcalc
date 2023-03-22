@@ -3,7 +3,7 @@ from uuid import UUID
 from typing import Optional
 
 
-def create_record(operation_id:UUID, user_id:UUID, amount:int, user_new_balance:int, operation_response: str) -> Optional[Record]:
+def create_record(operation_id:UUID, user_id:str, amount:int, user_new_balance:int, operation_response: str) -> Optional[Record]:
     
     new_record = Record.objects.create(
         operation_id=operation_id,

@@ -12,3 +12,5 @@ class Operation(models.Model):
         unique=True
     )
     cost=models.BigIntegerField()
+    def __str__(self) -> str:
+        return self.type

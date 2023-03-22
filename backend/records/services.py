@@ -3,7 +3,6 @@ from uuid import UUID
 from records import providers as records_providers
 from records.dataclasses import RecordData
 
-
 def get_last_record_by_user_id(user_id:UUID) -> RecordData:
 
     
@@ -20,3 +19,27 @@ def get_last_record_by_user_id(user_id:UUID) -> RecordData:
         date=last_user_record_model.date
     )
     return last_user_record_data
+
+def create_record(
+    operation_id: UUID,
+    user_id: int,
+    user_balance: int,
+    amount: int,
+    operation_response:str,) -> RecordData:
+    record_object = records_providers.create_record(
+        operation_id=operation_id,
+        user_id=user_id,
+        amount=amount,
+        user_new_balance=user_balance,
+        operation_response=operation_response
+    )
+    record_data = RecordData(
+        id=record_object.id ,
+        operation_id=record_object.operation_id ,
+        user_id=record_object.user_id ,
+        user_balance=record_object.user_balance,
+        amount=record_object.amount ,
+        operation_response=record_object.operation_response ,
+        date=record_object.date
+    )
+    return record_data
